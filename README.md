@@ -48,8 +48,8 @@ Note that the plugin is now *only tested with Redmine 3.2*.
 3. copy assets by running this command from your redmine root directory (note: the plugin has no migration for now):
 ```rake redmine:plugins:migrate RAILS_ENV=production```
 After that you *have to* configure your SAML settings especially for attribute mappings in
-  - plugins/auth_shib/lib/auth_shib/user_patch.rb
-  - plugins/auth_shib/lib/auth_shib/account_controller_patch.rb
+  - plugins/acnplm_auth_shib/lib/auth_shib/user_patch.rb
+  - plugins/acnplm_auth_shib/lib/auth_shib/account_controller_patch.rb
 
 4. restart your Redmine instance (depends on how you host it)
 
