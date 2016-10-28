@@ -20,9 +20,9 @@
 </p>
 <p>
   <label><%= l(:label_sync_groups) %></label>
-  <%= check_box_tag 'settings[label_sync_groups]', @settings['label_sync_groups'] %>
+  <%= check_box_tag 'settings[label_sync_groups]', false, @settings['label_sync_groups'] %>
 </p>
 <p>
   <label><%= l(:label_create_groups) %></label>
-  <%= check_box_tag 'settings[label_create_groups]', @settings['label_create_groups'] %>
+  <%= check_box_tag 'settings[label_create_groups]', false, @settings['label_create_groups'] %>
 </p>

@@ -50,6 +50,8 @@ module Redmine::ACNPLMAuth
        		        group = Group.find_by_lastname(i)
                 	unless group.present?
 			   	if saml_settings["label_create_groups"]
+                                        group = Group.new(:lastname => i)
+                                        group.save
                                         logger.info "created Group:"
 					logger.info group.lastname
                                 end
@@ -96,7 +98,9 @@ module Redmine::ACNPLMAuth
                         group = Group.find_by_lastname(i)
                         unless group.present?
                                 if saml_settings["label_create_groups"]
-                                        logger.info "created Group:"
+                                        group = Group.new(:lastname => i)
+                                        group.save
+					logger.info "created Group:"
                                         logger.info group.lastname
                                 end
                         end
