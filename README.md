@@ -1,5 +1,5 @@
-## Shibboleth Authentication Plugin for Redmine v3.2 stable
-This Plugin adds customized Shibboleth Authentication for [Redmine](http://www.redmine.org) 3.2.
+## Shibboleth Authentication Plugin for Redmine
+This Plugin adds customized Shibboleth Authentication for [Redmine](http://www.redmine.org) 3.3.0 stable.
 
 # Database
 Add one more column into table users:
@@ -38,7 +38,7 @@ Restart apache2
 
 You can first take a look at general instructions for plugins [here](http://www.redmine.org/wiki/redmine/Plugins).
 
-Note that the plugin is now *only tested with Redmine 3.2*.
+Note that the plugin was only tested with *Redmine 3.3.0 stable*, *Ruby 2.3.1* and *Rails 4.2.7.1*.
 
 1. clone this repository in your plugins/ directory
 
@@ -47,7 +47,7 @@ Note that the plugin is now *only tested with Redmine 3.2*.
 
 3. copy assets by running this command from your redmine root directory (note: the plugin has no migration for now):
 ```rake redmine:plugins:migrate RAILS_ENV=production```
-After that you *have to* configure your SAML settings especially for attribute mappings in
+After that you can adapt your Shibboleth settings especially for attribute mappings in
   - plugins/acnplm_auth_shib/lib/auth_shib/user_patch.rb
   - plugins/acnplm_auth_shib/lib/auth_shib/account_controller_patch.rb
 
