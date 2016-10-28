@@ -7,11 +7,22 @@
   <%= text_field_tag 'settings[label_login_with_saml]', @settings['label_login_with_saml'], :size => 50 %>
 </p>
 <p>
+  <label><%= l(:label_logout_url) %></label>
+  <%= text_field_tag 'settings[label_logout_url]', @settings['label_logout_url'], :size => 50 %>
+</p>
+<p>
   <label><%= l(:label_replace_redmine_login) %></label>
-  <%= check_box_tag 'settings[replace_redmine_login]', true, @settings['replace_redmine_login'] %>
+  <%= check_box_tag 'settings[replace_redmine_login]', false, @settings['replace_redmine_login'] %>
 </p>
 <p>
   <label><%= l(:label_onthefly_creation) %></label>
   <%= check_box_tag 'settings[onthefly_creation]', true, @settings['onthefly_creation'] %>
 </p>
-
+<p>
+  <label><%= l(:label_sync_groups) %></label>
+  <%= check_box_tag 'settings[label_sync_groups]', @settings['label_sync_groups'] %>
+</p>
+<p>
+  <label><%= l(:label_create_groups) %></label>
+  <%= check_box_tag 'settings[label_create_groups]', @settings['label_create_groups'] %>
+</p>

@@ -1,4 +1,5 @@
 require_dependency 'account_controller'
+require 'logger'
 
 module Redmine::ACNPLMAuth
   module AccountControllerPatch
@@ -14,8 +15,6 @@ module Redmine::ACNPLMAuth
     module InstanceMethods
 
       def login_with_saml
-        #TODO: test 'replace_redmine_login' feature
-		
         if saml_settings["enabled"] && saml_settings["replace_redmine_login"]
           redirect_to :controller => "account", :action => "login_with_saml_redirect", :provider => "saml", :origin => back_url
         else
@@ -25,7 +24,9 @@ module Redmine::ACNPLMAuth
 
       def login_with_saml_redirect		        
 	eppn = request.headers['HTTP_EPPN']
-	eppn = eppn.split('@')[0]
+	eppn1 = eppn.split('@')[0]
+        eppn2 = eppn.split('@')[1]
+        eppn = eppn1 + eppn2
 
         auth = {
 		"firstname"           => request.headers['HTTP_GIVENNAME'],
@@ -38,7 +39,34 @@ module Redmine::ACNPLMAuth
                 "provider"            => "shibboleth"
 	}	
 
+        logger = Logger.new(STDOUT)
+        logger.level = Logger::INFO
+
 	user = User.find_or_create_from_omniauth(auth)
+	if saml_settings["label_sync_groups"]
+	        ismemberof = request.headers['HTTP_ISMEMBEROF']
+	        ismemberof = ismemberof.split(';')
+	        ismemberof.each do |i|
+       		        group = Group.find_by_lastname(i)
+                	unless group.present?
+			   	if saml_settings["label_create_groups"]
+                                        logger.info "created Group:"
+					logger.info group.lastname
+                                end
+			end
+			if group.present?
+                       		users = group.users
+                        	unless users.include?(user)
+                                	group.users << user
+					logger.info "added User:"
+					logger.info user.login
+					logger.info "to Group:"
+					logger.info group.lastname
+                        	end
+        		end
+		end
+	end
+
         # taken from original AccountController
         # maybe it should be splitted in core
         if user.blank?          
@@ -55,10 +83,35 @@ module Redmine::ACNPLMAuth
             redirect_to signin_url
           end
         else
-	   params[:back_url] = request.protocol+request.headers["HTTP_HOST"]+request.headers["SCRIPT_NAME"]
+	  params[:back_url] = request.protocol+request.headers["HTTP_HOST"]+request.headers["SCRIPT_NAME"]
           successful_authentication(user)
           #cannot be set earlier, because sucessful_authentication() triggers reset_session()
-          session[:logged_in_with_saml] = true
+          
+	  session[:logged_in_with_saml] = true
+	  #Group<->Users Sync
+	  if saml_settings["label_sync_groups"]
+                ismemberof = request.headers['HTTP_ISMEMBEROF']
+                ismemberof = ismemberof.split(';')
+                ismemberof.each do |i|
+                        group = Group.find_by_lastname(i)
+                        unless group.present?
+                                if saml_settings["label_create_groups"]
+                                        logger.info "created Group:"
+                                        logger.info group.lastname
+                                end
+                        end
+                        if group.present?
+                                users = group.users
+                                unless users.include?(user)
+                                        group.users << user
+                                        logger.info "added User:"
+                                        logger.info user.login
+                                        logger.info "to Group:"
+                                        logger.info group.lastname
+                                end
+                        end
+                end
+          end
         end
 		
 		
@@ -66,7 +119,9 @@ module Redmine::ACNPLMAuth
 
       def login_with_saml_callback		
 	eppn = request.headers['HTTP_EPPN']
-        eppn = eppn.split('@')[0]
+        eppn1 = eppn.split('@')[0]
+	eppn2 = eppn.split('@')[1]
+	eppn = eppn1 + eppn2
 
         auth = {
                 "firstname"           => request.headers['HTTP_GIVENNAME'],
@@ -99,9 +154,31 @@ module Redmine::ACNPLMAuth
           user.update_attribute(:last_login_on, Time.now)
 	  params[:back_url] = request.headers.protocol+request.headers["HTTP_HOST"]+request.headers["SCRIPT_NAME"]
           successful_authentication(user)
-          #cannot be set earlier, because sucessful_authentication() triggers reset_session()
           session[:logged_in_with_saml] = true
-        end
+          if saml_settings["label_sync_groups"]
+                ismemberof = request.headers['HTTP_ISMEMBEROF']
+                ismemberof = ismemberof.split(';')
+                ismemberof.each do |i|
+                        group = Group.find_by_lastname(i)
+                        unless group.present?
+                                if saml_settings["label_create_groups"]
+                                        logger.info "created Group:"
+                                        logger.info group.lastname
+                                end
+                        end
+                        if group.present?
+                                users = group.users
+                                unless users.include?(user)
+                                        group.users << user
+                                        logger.info "added User:"
+                                        logger.info user.login
+                                        logger.info "to Group:"
+                                        logger.info group.lastname
+                                end
+                        end
+                end
+          end
+	end
       end
 
       def login_with_saml_failure		
@@ -131,9 +208,12 @@ module Redmine::ACNPLMAuth
       end
 
       def saml_logout_url(service = nil)		
-		logout_uri = ""
-        logout_uri += service.to_s unless logout_uri.blank?
-        logout_uri || home_url
+	logout_url_settings = Setting["plugin_acnplm_auth_shib"]["label_logout_url"]
+        unless logout_url_settings.blank?
+                logout_uri = logout_url_settings
+        end
+        logout_uri unless logout_uri.blank?
+	logout_uri || home_url
       end
 
     end
