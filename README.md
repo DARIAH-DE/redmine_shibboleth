@@ -42,15 +42,17 @@ Note that the plugin was only tested with *Redmine 3.3.0 stable*, *Ruby 2.3.1* a
 
 1. clone this repository in your plugins/ directory
 
-2. install the dependencies with bundler: 
+2. change the name of this plugin folder ("redmine_shibboleth") to "acnplm_auth_shib"
+
+3. install the dependencies with bundler: 
     ```bundle install```
 
-3. copy assets by running this command from your redmine root directory (note: the plugin has no migration for now):
+4. copy assets by running this command from your redmine root directory (note: the plugin has no migration for now):
 ```rake redmine:plugins:migrate RAILS_ENV=production```
-After that you can adapt your Shibboleth settings especially for attribute mappings in
+After that you can adapt your Shibboleth internal settings especially for attribute mappings in
   - plugins/acnplm_auth_shib/lib/auth_shib/user_patch.rb
   - plugins/acnplm_auth_shib/lib/auth_shib/account_controller_patch.rb
 
-4. restart your Redmine instance (depends on how you host it)
+5. restart your Redmine instance (depends on how you host it)
 
 Finally you need to configure some minor options for the plugin to work, in "Administration" > "Plugins" > "Configure" on the Shib Authentication plugin line.
