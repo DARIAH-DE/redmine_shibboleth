@@ -19,6 +19,10 @@
   <%= check_box_tag 'settings[onthefly_creation]', true, @settings['onthefly_creation'] %>
 </p>
 <p>
+  <label><%= l(:label_update_users_attributes) %></label>
+  <%= check_box_tag 'settings[label_update_users_attributes]', false, @settings['label_update_users_attributes'] %>
+</p>
+<p>
   <label><%= l(:label_sync_groups) %></label>
   <%= check_box_tag 'settings[label_sync_groups]', false, @settings['label_sync_groups'] %>
 </p>
@@ -26,3 +30,8 @@
   <label><%= l(:label_create_groups) %></label>
   <%= check_box_tag 'settings[label_create_groups]', false, @settings['label_create_groups'] %>
 </p>
+<p>
+  <label><%= l(:label_delete_user_from_groups) %></label>
+  <%= check_box_tag 'settings[label_delete_user_from_groups]', false, @settings['label_delete_user_from_groups'] %>
+</p>
+

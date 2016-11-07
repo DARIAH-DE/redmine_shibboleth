@@ -7,5 +7,7 @@ es:
   text_full_logout_proposal: Tal vez quiera %{value} antes de intentar con otro usuario
   text_logout_from_saml: cerrar su sesión SSO
   label_onthefly_creation: Crear usuarios automáticamente?
-  label_sync_groups: Sync groups from Shibboleth?
+  label_update_users_attributes: Update users attributes automatically?
+  label_sync_groups: Sync groups from LDAP?
   label_create_groups: Create groups automatically?
+  label_delete_user_from_groups: Delete users in groups automatically?
