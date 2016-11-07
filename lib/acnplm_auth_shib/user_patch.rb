@@ -5,11 +5,16 @@ class User
   def self.find_or_create_from_omniauth(omniauth)
 		logger = Logger.new(STDOUT)
 		logger.level = Logger::INFO
-		user = self.find_by_login(omniauth['login'])
+		
+		#First: look for an eppn match, then: look for a mail match
+		user = self.find_by_eppn(omniauth['login'])
 		unless user
 			user = self.find_by_mail(omniauth['mail'])
 		end
+		#disabled: look for login match
+		#user = self.find_by_login(omniauth['login'])
 
+		#If there is no user, create it:
     unless user
       if Redmine::ACNPLMAuth.onthefly_creation?
         auth = {          
@@ -27,6 +32,7 @@ class User
         user.reload
       end
     else
+			#if there is already an user: update users attributes:
 			if saml_settings["label_update_users_attributes"]
 				changed = false
 				if !omniauth['login'].nil? && (omniauth['login'] != user.login)
@@ -61,12 +67,15 @@ class User
     user
   end
   
-	def self.find_by_eppn(enterpriseid)
-	  # force string comparison to be case sensitive on MySQL
-	  if user 
-	    logger.info "user exists"
-	    user = User.where(:enterpriseid => enterpriseid)
-	  end
-	end  
+  def self.find_by_eppn(enterpriseid)
+		# First look for an exact match
+		user = where(:enterpriseid => enterpriseid).detect {|u| u.enterpriseid == enterpriseid}
+		unless user
+			# Fail over to case-insensitive if none was found
+			user = where("LOWER(login) = ?", enterpriseid.downcase).first
+		end
+		user
+  end
+ 
 
 end

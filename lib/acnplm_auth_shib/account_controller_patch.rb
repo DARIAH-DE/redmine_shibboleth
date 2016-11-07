@@ -112,8 +112,7 @@ module Redmine::ACNPLMAuth
 			end
 
       def login_with_saml_callback		
-				eppn = request.headers['HTTP_EPPN']
-				
+				eppn = request.headers['HTTP_EPPN']	
 				#EPPN formatting because of the "at"
 				eppn1 = eppn.split('@')[0]
 				eppn2 = eppn.split('@')[1]
