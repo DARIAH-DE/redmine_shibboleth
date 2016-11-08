@@ -34,7 +34,7 @@ Restart apache2
 
 ```sudo service apache2 restart```
 
-# Install
+## Install
 
 You can first take a look at general instructions for plugins [here](http://www.redmine.org/wiki/redmine/Plugins).
 
