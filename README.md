@@ -1,13 +1,13 @@
-## Shibboleth Authentication Plugin for Redmine
+# Shibboleth Authentication Plugin for Redmine
 This Plugin adds customized Shibboleth Authentication for [Redmine](http://www.redmine.org) 3.3.0 stable.
 
-# Database
+## Database
 Add one more column into table users:
 ```
 ALTER TABLE `users` ADD `enterpriseid` VARCHAR(127) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
 ```
 
-# Shibboleth
+## Shibboleth
 
 Add these lines into your HTTP Server file. For example for Apache2 with a shibd2 deamon: /etc/apache2/sites-enabled/000-default.conf
 ```
@@ -58,7 +58,7 @@ After that you can adapt your Shibboleth internal settings especially for attrib
 Finally you need to configure some minor options for the plugin to work, in "Administration" > "Plugins" > "Configure" on the Shib Authentication plugin line.
 
 
-# Development
+## Development
 
 This tool has been developed within the “Humanities at Scale” project.
 This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement 675570.
