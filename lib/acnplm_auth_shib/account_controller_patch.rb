@@ -28,19 +28,13 @@ module Redmine::ACNPLMAuth
 				eppn1 = eppn.split('@')[0]
 				eppn2 = eppn.split('@')[1]
 				eppn = eppn1 + eppn2
-				
-				#login formatting because of the " "
-				login = request.headers['HTTP_CN']
-				if login.include? ' '
-					 login.sub!(' ', '')
-				end
 
 				auth = {
 					"firstname" => request.headers['HTTP_GIVENNAME'],
 					"lastname"	=> request.headers['HTTP_SN'],
 					"mail" => request.headers['HTTP_MAIL'],
 					"displayname" => request.headers['HTTP_CN'],
-					"login" => login,
+					"login" => eppn,
 					"uid" => eppn,
 					"enterpriseid" => eppn,
 					"provider" => "shibboleth"
