@@ -25,9 +25,11 @@ module Redmine::ACNPLMAuth
       def login_with_saml_redirect		        	
 				#EPPN formatting because of the "at"
 				eppn = request.headers['HTTP_EPPN']
-				eppn1 = eppn.split('@')[0]
-				eppn2 = eppn.split('@')[1]
-				eppn = eppn1 + eppn2
+				if eppn.include? '@'
+					eppn1 = eppn.split('@')[0]
+					eppn2 = eppn.split('@')[1]
+					eppn = eppn1 + eppn2
+				end
 
 				auth = {
 					"firstname" => request.headers['HTTP_GIVENNAME'],
@@ -113,9 +115,11 @@ module Redmine::ACNPLMAuth
       def login_with_saml_callback		
 				eppn = request.headers['HTTP_EPPN']	
 				#EPPN formatting because of the "at"
-				eppn1 = eppn.split('@')[0]
-				eppn2 = eppn.split('@')[1]
-				eppn = eppn1 + eppn2
+				if eppn.include? '@'
+					eppn1 = eppn.split('@')[0]
+					eppn2 = eppn.split('@')[1]
+					eppn = eppn1 + eppn2
+				end
 
 				auth = {
 					"firstname" => request.headers['HTTP_GIVENNAME'],
