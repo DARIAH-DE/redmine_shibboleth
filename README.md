@@ -50,8 +50,8 @@ Note that the plugin was only tested with *Redmine 3.3.0 stable*, *Ruby 2.3.1* a
 4. copy assets by running this command from your redmine root directory (note: the plugin has no migration for now):
 ```rake redmine:plugins:migrate RAILS_ENV=production```
 After that you can adapt your Shibboleth internal settings especially for attribute mappings in
-  - plugins/acnplm_auth_shib/lib/auth_shib/user_patch.rb
-  - plugins/acnplm_auth_shib/lib/auth_shib/account_controller_patch.rb
+  - plugins/acnplm_auth_shib/lib/acnplm_auth_shib/user_patch.rb
+  - plugins/acnplm_auth_shib/lib/acnplm_auth_shib/account_controller_patch.rb
 
 5. restart your Redmine instance (depends on how you host it)
 
