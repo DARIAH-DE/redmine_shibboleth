@@ -4,7 +4,7 @@ This Plugin adds customized Shibboleth Authentication for [Redmine](http://www.r
 # Database
 Add one more column into table users:
 ```
-ALTER TABLE `users` ADD `enterpriseid` VARCHAR(127) CHARACTER SET utf8 COLLATE utf8_general_ci NULL ;
+ALTER TABLE `users` ADD `enterpriseid` VARCHAR(127) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
 ```
 
 # Shibboleth
