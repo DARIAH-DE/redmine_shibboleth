@@ -56,3 +56,9 @@ After that you can adapt your Shibboleth internal settings especially for attrib
 5. restart your Redmine instance (depends on how you host it)
 
 Finally you need to configure some minor options for the plugin to work, in "Administration" > "Plugins" > "Configure" on the Shib Authentication plugin line.
+
+
+# Development
+
+This tool has been developed within the “Humanities at Scale” project.
+This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement 675570.
