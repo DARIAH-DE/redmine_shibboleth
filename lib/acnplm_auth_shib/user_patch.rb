@@ -21,8 +21,7 @@ class User
 					:enterpriseid => omniauth['enterpriseid'],
 					:firstname  => omniauth['firstname'],
           :lastname   => omniauth['lastname'],
-          :mail       => omniauth['mail'],
-					:displayname	=> omniauth['displayname']					
+          :mail       => omniauth['mail'],					
         }
         user = new(auth)
 				user.login    = omniauth['login']
@@ -33,7 +32,7 @@ class User
       end
     else
 			#if there is already an user: update users attributes:
-			if saml_settings["label_update_users_attributes"]
+			if Redmine::ACNPLMAuth.settings_hash["label_update_users_attributes"]
 				changed = false
 				if !omniauth['login'].nil? && (omniauth['login'] != user.login)
 					user.login = omniauth['login']
@@ -55,10 +54,6 @@ class User
 					user.enterpriseid = omniauth['enterpriseid']
 					changed = true
 				end
-				if !omniauth['displayname'].nil? && (omniauth['displayname'] != user.displayname)
-					user.displayname = omniauth['displayname']
-					changed = true
-				end
 				if changed
 					user.save!
 				end
@@ -76,6 +71,4 @@ class User
 		end
 		user
   end
- 
-
 end

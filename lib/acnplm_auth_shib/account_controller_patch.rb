@@ -22,20 +22,25 @@ module Redmine::ACNPLMAuth
         end
       end
 
-      def login_with_saml_redirect		        
-				eppn = request.headers['HTTP_EPPN']
-				
+      def login_with_saml_redirect		        	
 				#EPPN formatting because of the "at"
+				eppn = request.headers['HTTP_EPPN']
 				eppn1 = eppn.split('@')[0]
 				eppn2 = eppn.split('@')[1]
 				eppn = eppn1 + eppn2
+				
+				#login formatting because of the " "
+				login = request.headers['HTTP_CN']
+				if login.include? ' '
+					 login.sub!(' ', '')
+				end
 
 				auth = {
 					"firstname" => request.headers['HTTP_GIVENNAME'],
 					"lastname"	=> request.headers['HTTP_SN'],
 					"mail" => request.headers['HTTP_MAIL'],
 					"displayname" => request.headers['HTTP_CN'],
-					"login" => eppn,
+					"login" => login,
 					"uid" => eppn,
 					"enterpriseid" => eppn,
 					"provider" => "shibboleth"
@@ -78,15 +83,15 @@ module Redmine::ACNPLMAuth
 									logger.info group.lastname
 								end
 							end
-						end
-						if group.present?
-							users = group.users
-							unless users.include?(user)
-								group.users << user
-								logger.info "added User:"
-								logger.info user.login
-								logger.info "to Group:"
-								logger.info group.lastname
+							if group.present?
+								users = group.users
+								unless users.include?(user)
+									group.users << user
+									logger.info "added User:"
+									logger.info user.login
+									logger.info "to Group:"
+									logger.info group.lastname
+								end
 							end
 						end
 						#if user gets deleted in groups on LDAP side, he will be deleted in groups on redmine side as well:
@@ -167,15 +172,15 @@ module Redmine::ACNPLMAuth
 									logger.info group.lastname
 								end
 							end
-						end
-						if group.present?
-							users = group.users
-							unless users.include?(user)
-								group.users << user
-								logger.info "added User:"
-								logger.info user.login
-								logger.info "to Group:"
-								logger.info group.lastname
+							if group.present?
+								users = group.users
+								unless users.include?(user)
+									group.users << user
+									logger.info "added User:"
+									logger.info user.login
+									logger.info "to Group:"
+									logger.info group.lastname
+								end
 							end
 						end
 						#if user gets deleted in groups on LDAP side, he will be deleted in groups on redmine side as well:

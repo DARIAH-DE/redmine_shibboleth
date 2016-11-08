@@ -16,7 +16,7 @@ module Redmine::ACNPLMAuth
       settings_hash["label_login_with_saml"]
     end
     def label_update_user_attributes
-      settings_hash["label_update_user_attributes"]
+      settings_hash["label_update_users_attributes"]
     end
 
     def label_delete_user_from_groups
