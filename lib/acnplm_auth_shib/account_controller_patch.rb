@@ -65,6 +65,7 @@ module Redmine::ACNPLMAuth
           successful_authentication(user)
           #cannot be set earlier, because sucessful_authentication() triggers reset_session()
           session[:logged_in_with_saml] = true
+	  user.update_attribute(:last_login_on, Time.now)
 					#Group<->Users Sync
 					if saml_settings["label_sync_groups"]
 						ismemberof = request.headers['HTTP_ISMEMBEROF']
